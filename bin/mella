@@ -79,9 +79,10 @@ elif [[ $1 == "get" ]]; then
 		fi
 
 		# process Makefile, using remaining arguments for variable substitution
-		echo "$basepath/bin/mmake --output Makefile${arg_list} $dbhome/Makefile path=$dbhome $@"
+		output_makefile=Makefile${arg_list}
+		echo "$basepath/bin/mmake --output $output_makefile $dbhome/Makefile path=$dbhome $@"
 		if $basepath/bin/mmake --output Makefile${arg_list} $dbhome/Makefile path=$dbhome "$@"; then
-			make all
+			make -f $output_makefile all
 		fi
 
 	else
