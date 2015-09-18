@@ -1,0 +1,94 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+
+basepath=$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )
+
+
+function help() {
+	echo "usage: mella command [args]"
+	echo
+	echo "commands:"
+	echo "  get <db> [args]  Download database <db> with possible arguments"
+	echo "  list             List available databases to download"
+	echo "  args             List arguments for database Makefile"
+	echo "  help             Display this help"
+	echo
+	echo "mella is the apiarius database downloader."
+}
+
+
+# Set and export APIARIUS_DATA if undefined
+
+if ! env | grep -q '^APIARIUS_DATA='; then
+	export APIARIUS_DATA=${APIARIUS_DATA:-$HOME/data}
+fi
+
+
+# Process commands
+
+if (( $# == 0 )); then
+
+	help
+
+elif [[ $1 == "help" ]]; then
+
+	help
+
+elif [[ $1 == "list" ]]; then
+
+	ls -1 $basepath/db
+
+elif [[ $1 == "args" ]]; then
+
+	if (( $# >= 2 )); then
+		sed '/^$/,$d' $basepath/db/$2/Makefile	
+	else
+		help
+		echo "Error: no database specified"
+		exit 1
+	fi
+
+elif [[ $1 == "get" ]]; then
+
+	if (( $# >= 2 )); then
+
+		dbname=$2
+
+		# descend into new database directory
+		cd $APIARIUS_DATA
+		if [[ ! -d $dbname ]]; then
+			mkdir $dbname
+		fi
+		cd $dbname
+
+		dbhome=$basepath/db/$dbname
+
+		# consume the command and the database arguments
+		shift; shift
+
+		# construct argument list (if any remain)
+		if (( $# > 0 )); then
+			arg_list=$( IFS=','; echo "$*" )
+			# prepend , and remove trailing ,
+			arg_list=,${arg_list%?}
+		else
+			arg_list=''
+		fi
+
+		# process Makefile, using remaining arguments for variable substitution
+		echo "$basepath/bin/mmake --output Makefile${arg_list} $dbhome/Makefile path=$dbhome $@"
+		if $basepath/bin/mmake --output Makefile${arg_list} $dbhome/Makefile path=$dbhome "$@"; then
+			make all
+		fi
+
+	else
+		help
+		echo "Error: no database specified"
+		exit 1
+	fi
+
+fi
+

@@ -1,0 +1,90 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+
+
+pr = argparse.ArgumentParser(description='mella Makefile preprocessor')
+pr.add_argument('input', help='input Makefile')
+pr.add_argument('-o', '--output', help='output Makefile')
+pr.add_argument('arg', nargs='*', help='argument-value pairs')
+
+
+argv = pr.parse_args()
+
+
+special_variables = ['path']
+
+variables = {}
+unused = {}
+
+
+# Parse argument-value pairs
+
+for arg in argv.arg:
+    try:
+        i = arg.index('=')
+        variable = arg[:i]
+        variables[variable] = arg[(i+1):]
+        unused[variable] = True
+    except:
+        sys.stderr.write('Error: argument-value pair "{}" could not be parsed:\n'.format(arg))
+        sys.stderr.write('expected format is variable=value')
+        sys.exit(1)
+
+
+# Preprocess Makefile
+
+# set output to stdout unless output file is defined
+outf = sys.stdout
+if argv.output and argv.output != '-':
+    outf = open(argv.output, 'w')
+
+processing = True
+with open(argv.input) as inf:
+
+    for line in inf:
+
+        if not line.rstrip():
+            # stop processing on first blank line
+            processing = False
+
+        if processing:
+            # look for definition of optional variables
+            i = line.find('?=')
+            if i != -1:
+                variable = line[:i].strip()
+                if variable in variables:
+                    # use passed value from the command line
+                    value = variables[variable]
+                    unused[variable] = False
+                else:
+                    # no value passed: use default value in the Makefile
+                    value = line[(i+2):].strip()
+                outf.write('{} = {}\n'.format(variable, value))
+            else:
+                # print line verbatim
+                outf.write(line)
+        else:
+            # print line verbatim
+            outf.write(line)
+
+outf.close()
+
+
+# Check if any passed arguments are unused
+
+# ignore special variables
+for x in special_variables:
+    unused[x] = False
+
+any_unused = False
+for k, v in unused.items():
+    if v:
+        any_unused = True
+        sys.stderr.write('Error: argument "{}" was not used'.format(k))
+
+if any_unused:
+    sys.exit(1)
+
+
