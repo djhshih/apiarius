@@ -72,8 +72,8 @@ elif [[ $1 == "get" ]]; then
 		# construct argument list (if any remain)
 		if (( $# > 0 )); then
 			arg_list=$( IFS=','; echo "$*" )
-			# prepend , and remove trailing ,
-			arg_list=,${arg_list%?}
+			# prepend ,
+			arg_list=,${arg_list}
 		else
 			arg_list=''
 		fi
