@@ -17,7 +17,7 @@ orthologs.tsv:
 		| gunzip -c > orthologs.tsv
 
 orthologs_$(species)_raw.tsv: orthologs.tsv
-	grep "$(species_src_sh).*$(species_dest_sh)" orthologs.tsv \
+	grep -E "($(species_src_sh).*$(species_dest_sh))|($(species_dest_sh).*$(species_src_sh))" orthologs.tsv \
 		> orthologs_$(species_src)-$(species_dest)_raw.tsv
 
 orthologs_$(species)_ensp.tsv: orthologs_$(species)_raw.tsv
