@@ -3,7 +3,8 @@
 This project automates downloading databases from online resources.
 It provides one command (`mella`) for choosing which database to download, and
 code for downloading each database are available as individual
-Makefiles, possibly accompanied by some preprocessing scripts.
+Makefiles, possibly accompanied by some preprocessing scripts. This project aims
+to modular so that code for downloading each new database can be easily added.
 
 ## Requirements
 
