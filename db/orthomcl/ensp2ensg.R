@@ -28,7 +28,11 @@ x <- qread(argv$input, as.is=TRUE);
 
 for (species in colnames(x)) {
 	message(species);
-	db <- qread(file.path(db.dir, sprintf("ensembl_ids_%s.rds", species)));
+	db.path <- file.path(db.dir, sprintf("ensembl_ids_%s.rds", species));
+	if (!file.exists(db.path)) {
+		stop(sprintf("Need %s", db.path))
+	}
+	db <- qread(db.path);
 	y <- map_id(x[, species], db, "ensembl_peptide_id", "ensembl_gene_id")
 	x[, species] <- y;
 }

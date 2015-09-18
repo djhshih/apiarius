@@ -4,9 +4,10 @@
 
 import sys
 
-species = ['hsapiens', 'mmusculus']
 in_fname = sys.argv[1]
 out_fname = sys.argv[2]
+species1 = sys.argv[3]
+species2 = sys.argv[4]
 delim = '\t'
 
 
@@ -19,7 +20,7 @@ def get_genes(line):
 
 with open(out_fname, 'w') as outf:
 
-    outf.write("{}\n".format(delim.join(species)))
+    outf.write(species1 + delim + species2 + '\n')
 
     with open(in_fname) as inf:
 
@@ -27,7 +28,7 @@ with open(out_fname, 'w') as outf:
 
             gene1, gene2 = get_genes(line)
 
-            outf.write("{}\n".format(delim.join(
+            outf.write('{}\n'.format(delim.join(
                 [gene1, gene2]
             )))
 

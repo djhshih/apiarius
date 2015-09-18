@@ -1,8 +1,6 @@
 path ?= .
 species_src ?= hsapiens
 species_dest ?= mmusculus
-species_src_sh ?= hsap
-species_dest_sh ?= mmus
 release ?= release-5
 
 species = $(species_src)-$(species_dest)
@@ -17,11 +15,12 @@ orthologs.tsv:
 		| gunzip -c > orthologs.tsv
 
 orthologs_$(species)_raw.tsv: orthologs.tsv
-	grep -E "($(species_src_sh).*$(species_dest_sh))|($(species_dest_sh).*$(species_src_sh))" orthologs.tsv \
-		> orthologs_$(species_src)-$(species_dest)_raw.tsv
+	$(path)/sel-species.sh orthologs.tsv orthologs_$(species)_raw.tsv $(species_src) $(species_dest)
 
 orthologs_$(species)_ensp.tsv: orthologs_$(species)_raw.tsv
-	$(path)/process.py orthologs_$(species)_raw.tsv orthologs_$(species)_ensp.tsv 
+	$(path)/process.py orthologs_$(species)_raw.tsv orthologs_$(species)_ensp.tsv \
+		$(species_src) $(species_dest)
+
 orthologs_$(species)_ens.tsv: orthologs_$(species)_ensp.tsv
 	BIOMART_STORE=$(biomart_path) \
 		$(path)/ensp2ensg.R orthologs_$(species)_ensp.tsv orthologs_$(species)_ens.tsv
