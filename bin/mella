@@ -12,8 +12,8 @@ function help() {
 	echo
 	echo "commands:"
 	echo "  get <db> [args]  Download database <db> with possible arguments"
+	echo "  args <db>        List arguments for database Makefile"
 	echo "  list             List available databases to download"
-	echo "  args             List arguments for database Makefile"
 	echo "  help             Display this help"
 	echo
 	echo "mella is the apiarius database downloader."
