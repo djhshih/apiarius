@@ -85,10 +85,18 @@ elif [[ $1 == "get" ]]; then
 		fi
 
 	else
+
 		help
 		echo "Error: no database specified"
 		exit 1
+
 	fi
+
+else
+
+	help
+	echo "Error: invalid command specified"
+	exit 1
 
 fi
 
