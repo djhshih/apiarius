@@ -24,6 +24,7 @@ function help() {
 
 if ! env | grep -q '^APIARIUS_DATA='; then
 	export APIARIUS_DATA=${APIARIUS_DATA:-$HOME/data}
+	mkdir -p $APIARIUS_DATA
 fi
 
 
