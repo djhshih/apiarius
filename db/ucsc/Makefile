@@ -7,5 +7,6 @@ all: $(genome)/$(table).txt.gz
 	
 
 $(genome)/$(table).txt.gz:
+	mkdir -p $(genome)
 	curl $(url)/$(table).txt.gz > $(genome)/$(table).txt.gz
 
