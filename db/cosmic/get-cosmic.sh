@@ -5,9 +5,12 @@ base_url=sftp-cancer.sanger.ac.uk
 genome=$1
 version=$2
 table=$3
+subdir=$4
+ext=$5
+gz=$6
 
-if (( $# != 3 )); then
-	echo "usage ${0##*/} <genome> <version> <table>"
+if (( $# != 6 )); then
+	echo "usage ${0##*/} <genome> <version> <table> <subdir> <ext>"
 	exit 1
 fi
 
@@ -32,11 +35,22 @@ if [[ -z $password ]]; then
 	echo
 fi
 
-mkdir -p ${genome}
+mkdir -p ${genome}/${version}/${subdir,,}
 
 # download file via sftp
-curl \
-	-k sftp://${base_url}/files/${genome}/cosmic/${version}/${table}.tsv.gz \
-	--user "$username:$password" \
-	| gunzip > ${genome}/${table}.tsv
+if (( $gz != 0 )); then
+
+	curl \
+		-k sftp://${base_url}/files/${genome}/cosmic/${version}/${subdir}/${table}.${ext}.gz \
+		--user "$username:$password" \
+		| gunzip > ${genome}/${version}/${subdir,,}/${table}.${ext}
+
+else
+
+	curl \
+		-k sftp://${base_url}/files/${genome}/cosmic/${version}/${subdir}/${table}.${ext} \
+		--user "$username:$password" \
+		> ${genome}/${version}/${subdir,,}/${table}.${ext}
+
+fi
 
