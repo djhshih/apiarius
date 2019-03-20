@@ -12,8 +12,7 @@ annotation_pri_gtf = gencode.v$(release).primary_assembly.annotation.gtf
 genome_fa = GRCh38.primary_assembly.genome.fa
 
 
-#all: $(genome)/$(annotation) $(genome)/$(annotation_pri_gtf) $(genome)/$(genome_fa)
-all: $(genome)/$(annotation_pri_gtf)
+all: $(genome)/$(annotation) $(genome)/$(annotation_pri_gtf) $(genome)/$(genome_fa)
 	
 
 $(genome):
