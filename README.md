@@ -17,11 +17,11 @@ to modular so that code for downloading each new database can be easily added.
 First, place the contents of this project somewhere permanent, because
 the scripts herein will be needed by the main program
 
-Then, install `mella` to `~/local/bin` by
+Then, install `mella` to `~/local` by
 
    ./install.sh
 
-Remember to append `~/local/bin` to your `PATH`.
+Remember to append `~/local/bin` to your `PATH` environmental variable.
 Otherwise, to install `mella` elsewhere, define `DESTDIR` another directory
 
     DESTDIR=/usr/local ./install.sh
