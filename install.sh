@@ -1,7 +1,6 @@
 #!/bin/bash
 
-set -o errexit
-set -o nounset
+set -euo pipefail
 
 DESTDIR=${DESTDIR:-$HOME/local}
 
