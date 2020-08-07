@@ -46,7 +46,8 @@ elif [[ $1 == "list" ]]; then
 elif [[ $1 == "args" ]]; then
 
 	if (( $# >= 2 )); then
-		sed '/^$/,$d' $basepath/db/$2/Makefile	
+		# skip first line and print until the first empty line
+		sed '1d;/^$/,$d' $basepath/db/$2/Makefile	
 	else
 		help
 		echo "Error: no database specified"
