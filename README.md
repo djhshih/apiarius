@@ -9,6 +9,7 @@ to modular so that code for downloading each new database can be easily added.
 ## Requirements
 
 - make, coreutils, grep, curl, wget
+- python3
 - R, argparser, io, biomaRt
 
 ## Install
