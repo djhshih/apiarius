@@ -3,7 +3,7 @@
 set -o errexit
 set -o nounset
 
-DESTDIR=${DESTDIR:-/usr/local}
+DESTDIR=${DESTDIR:-$HOME/local}
 
 basepath=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
