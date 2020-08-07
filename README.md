@@ -23,7 +23,7 @@ Then, install `mella` to `/usr/local/bin` by
 
 To install `mella` elsewhere, define `DESTDIR` another directory
 
-    DESTDIR=/usr/local ./install.sh
+    DESTDIR=~/local ./install.sh
 
 ## Usage
 
