@@ -1,15 +1,16 @@
 path ?= .
 release ?= 37
 genome ?= grch38
+organism ?= human
 
-url = ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_$(release)
+url = ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_$(organism)/release_$(release)
 
 annotation = gencode.v$(release).annotation.gff3
 annotation_pri = gencode.v$(release).primary_assembly.annotation.gff3
 # STAR requires GTF format and recommends files marked with PRI (primary)
 annotation_pri_gtf = gencode.v$(release).primary_assembly.annotation.gtf
 
-genome_fa = $(subst grch,GRCh,$(genome)).primary_assembly.genome.fa
+genome_fa = $(subst grc,GRC,$(genome)).primary_assembly.genome.fa
 
 transcriptome_fa = gencode.v$(release).transcripts.fa
 
@@ -31,7 +32,7 @@ $(genome)/$(annotation_pri_gtf): $(genome)
 
 $(genome)/$(genome_fa): $(genome)
 	curl $(url)/$(genome_fa).gz > $(genome)/$(genome_fa).gz
-	gunzip -k $(genome)/$(genome_fa)
+	gunzip -k $(genome)/$(genome_fa).gz
 
 $(genome)/$(transcriptome_fa): $(genome)
 	curl $(url)/$(transcriptome_fa).gz > $(genome)/$(transcriptome_fa).gz
